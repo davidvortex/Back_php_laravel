@@ -23,14 +23,14 @@ print_r($onlineSale->getConceptos());
 
 // Clases
 class Vender {
-    protected float $total;
-    protected string $date;
+    private float $total;
+    private string $date;
     private array $conceptos = [];
     private static int $contar = 0;
 
     public function __construct(float $total, string $date) {
-        $this->total = $total;
-        $this->date = $date;
+        $this->setTotal($total);
+        $this->setDate($date);
         self::$contar++;
     }
 
@@ -40,6 +40,10 @@ class Vender {
 
     public function getConceptos(): array {
         return $this->conceptos;
+    }
+
+    public function setConceptos(array $conceptos): void {
+        $this->conceptos = $conceptos;
     }
 
     public function getTotal(): float {
@@ -67,7 +71,7 @@ class Vender {
     }
 
     public function createInvoice(): string {
-        return "Factura creada para venta local. Total: {$this->total} - Fecha: {$this->date}\n";
+        return "Factura creada para venta local. Total: {$this->getTotal()} - Fecha: {$this->getDate()}\n";
     }
 
     public function __destruct() {
@@ -80,7 +84,7 @@ class OnlineSale extends Vender {
 
     public function __construct(float $total, string $date, string $metodoPago) {
         parent::__construct($total, $date);
-        $this->metodoPago = $metodoPago;
+        $this->setMetodoPago($metodoPago);
     }
 
     public function getMetodoPago(): string {
@@ -92,7 +96,7 @@ class OnlineSale extends Vender {
     }
 
     public function createInvoice(): string {
-        return "Factura de venta en línea creada. Total: {$this->getTotal()} - Fecha: {$this->getDate()} - Pago: {$this->metodoPago}\n";
+        return "Factura de venta en línea creada. Total: {$this->getTotal()} - Fecha: {$this->getDate()} - Pago: {$this->getMetodoPago()}\n";
     }
 }
 
@@ -101,8 +105,8 @@ class Concepto {
     private int|float $contenido;
 
     public function __construct(string $descripcion, int|float $contenido) {
-        $this->descripcion = $descripcion;
-        $this->contenido = $contenido;
+        $this->setDescripcion($descripcion);
+        $this->setContenido($contenido);
     }
 
     public function getDescripcion(): string {
